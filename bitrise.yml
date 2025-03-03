@@ -1,0 +1,21 @@
+format_version: "11"
+default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
+
+workflows:
+  deploy-apk:
+    steps:
+      - git-clone: {}
+      - script:
+          title: "Verify APK existence"
+          inputs:
+            - content: |
+                if [ ! -f "./app-dinh-gia.apk" ]; then
+                  echo "❌ APK file not found!"
+                  exit 1
+                else
+                  echo "✅ APK file found!"
+                fi
+      - deploy-to-bitrise-io:
+          inputs:
+            - notify_user_groups: "all"
+            - app_path: "./app-dinh-gia.apk"
